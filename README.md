@@ -4,10 +4,11 @@ Planly — приложение для управления подписками
 
 ## Команда
 
-- [benedIbiskit](https://github.com/benedIbiskit) — владелец репозитория, координация проекта.
-- [Егор (EgorMokretsov)](https://github.com/EgorMokretsov) — участник разработки backend.
+- [Егор (EgorMokretsov)](https://github.com/EgorMokretsov) — разработка backend, подготовка ADR.
+- [Владислав Журавлев (benedIbiskit)](https://github.com/benedIbiskit) — владелец репозитория, координация проекта и настройки GitHub.
+- Артем Потапов — участник разработки и ревью. GitHub-логин будет добавлен позже; после его получения владелец пригласит Артема в репозиторий.
 
-Состав команды и распределение ролей уточняются участниками в Pull Request.
+Канал связи — [Issues проекта](https://github.com/benedIbiskit/Planly/issues) и обсуждения Pull Request.
 
 ## Стек технологий
 
@@ -30,11 +31,7 @@ git clone https://github.com/benedIbiskit/Planly.git
 cd Planly
 ```
 
-Пока Pull Request практики №1 открыт, переключитесь на ветку приложения:
-
-```bash
-git switch feature/initial-setup
-```
+Приложение практики №1 находится в `main`. Для разработки создавайте отдельную ветку по правилам CONTRIBUTING.md.
 
 ### Виртуальное окружение
 
@@ -75,7 +72,7 @@ uvicorn main:app --reload
 ## Участие в разработке
 
 Правила ветвления, коммитов и ревью: [CONTRIBUTING.md](CONTRIBUTING.md).
-Отчёт и чек-лист практики: [docs/practice-1.md](docs/practice-1.md) в ветке `feature/initial-setup`.
+Отчёт практики №1: [docs/practice-1.md](docs/practice-1.md). Он сохраняет состояние на момент подготовки; фактическое слияние подтверждается [PR №1](https://github.com/benedIbiskit/Planly/pull/1).
 
 ## Лицензия
 
