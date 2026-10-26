@@ -64,8 +64,19 @@ uvicorn main:app --reload
 | --- | --- |
 | `GET /` | `{"message": "Hello World"}` |
 | `GET /health` | `{"status": "healthy"}` |
+| `GET /version` | `{"version": "0.2.0", "team": "Planly"}` |
 | `/docs` | Интерактивная документация Swagger UI |
 | `/openapi.json` | Схема OpenAPI |
+
+Версия API — **0.2.0**, имя команды — **Planly**. Источник версии один: `app.version`; он используется в `GET /version`, OpenAPI и Swagger UI.
+
+Пример запроса в PowerShell:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/version
+```
+
+Ожидаемые поля: `version = 0.2.0`, `team = Planly`. В `/openapi.json` поле `info.version` также равно `0.2.0`; в `/docs` отображается та же версия.
 
 Для остановки сервера нажмите `Ctrl+C`. Окружение `venv/` создаётся локально и исключено из Git.
 
