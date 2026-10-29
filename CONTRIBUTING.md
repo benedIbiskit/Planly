@@ -13,7 +13,7 @@ docs/contributing-rules                   o----o----/
 
 Каждый PR решает одну задачу. Крупные изменения делим на законченные части; ориентир для обычной ветки — несколько дней. Перед созданием задачи обновляем `main`; перед слиянием получаем актуальную базу и повторяем проверки после разрешения конфликтов. История общей опубликованной ветки не переписывается.
 
-Предлагаемый способ слияния — **Squash and merge** с итоговым сообщением Conventional Commits. После merge удаляем ненужную рабочую ветку. Владелец включает **Automatically delete head branches** в настройках GitHub.
+Предлагаемый способ слияния — **Squash and merge** с итоговым сообщением Conventional Commits. После merge удаляем ненужную рабочую ветку. **Automatically delete head branches** включено владельцем 2026-10-29.
 
 ### Ветвление
 
@@ -106,9 +106,9 @@ git push
 
 ## Защита ветки
 
-**Состояние на 2026-10-26:** выполнение настройки и экспериментов пока не подтверждено. Ниже зафиксирован целевой набор; он не является доказательством включённой защиты. Административные изменения выполняет **Владислав Журавлев (@benedIbiskit)**, единственный владелец личного репозитория.
+**Подтверждено 2026-10-29:** владелец **Владислав Журавлев (@benedIbiskit)** настроил активную защиту `main`. Состав правил проверен по публичному API; пустой bypass и автоматическое удаление рабочих веток подтверждены скриншотами владельца. Прямой push и переписывание истории отклонены GitHub, в том числе при выполнении владельцем.
 
-Целевой ruleset `protect-main`:
+Действующий [ruleset `protect-main`](https://github.com/benedIbiskit/Planly/rules/26107432):
 
 | Настройка | Значение |
 | --- | --- |
@@ -124,19 +124,53 @@ git push
 | Require status checks to pass | Выключено до практики №5 |
 | Require linear history | Не требуется для выбранного GitHub Flow |
 
-`Restrict deletions` должно быть включено; на default-ветке запрет удаления экспериментом не проверяется. Отдельной `develop` в выбранной стратегии нет.
+`Restrict deletions` включено; на default-ветке запрет удаления экспериментом не проверяется. Отдельной `develop` в выбранной стратегии нет. В Settings → General → Pull Requests включено **Automatically delete head branches** (подтверждено скриншотом владельца 2026-10-29).
 
-Проверка читателем: [активные правила репозитория](https://github.com/benedIbiskit/Planly/rules) и [API правил main](https://api.github.com/repos/benedIbiskit/Planly/rules/branches/main). Владелец дополнительно проверяет пустой bypass и автоматическое удаление рабочих веток.
+Проверка читателем: [страница правил](https://github.com/benedIbiskit/Planly/rules/26107432) и [API ruleset](https://api.github.com/repos/benedIbiskit/Planly/rulesets/26107432). Административные изменения выполняет единственный владелец; дату, исполнителя и причину изменения правил фиксируем в этом разделе.
 
 **Доказательства проверки**
 
-- Прямой push: **эксперимент не выполнен, реальный текст отказа не получен**.
-- Force-push: **эксперимент не выполнен, реальный текст отказа не получен**.
-- Изменение настроек: дата, исполнитель и ссылка на ruleset будут зафиксированы после действий владельца.
+Исполнитель — Владислав Журавлев; дата — 2026-10-29. Ниже переписаны команды и фактические сообщения об отказах со скриншотов, переданных владельцем. Подготовка и передача объектов опущены; все строки отказа сервера сохранены.
 
-После экспериментов сюда вставляются полные фактические ответы GitHub с `GH013` или `GH006` и `[remote rejected]`; для force-push нужна отдельная строка о запрете переписывания истории. Учебный ожидаемый вывод не заменяет результат. Проверки выполняются только после подтверждения активной защиты и пустого bypass.
+Прямой push: создан пустой пробный коммит `23fd412`; GitHub потребовал Pull Request и отклонил отправку:
 
-Любое временное отключение защиты фиксируется здесь: **кто, когда и зачем**. Если пробный пустой коммит всё же попал в `main`, фиксируются его SHA и дата; история сервера не переписывается.
+```text
+git commit --allow-empty -m "chore: verify branch protection"
+[main 23fd412] chore: verify branch protection
+git push origin main
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/benedIbiskit/Planly/rules?ref=refs%2Fheads%2Fmain
+remote:
+remote: - Changes must be made through a pull request.
+remote:
+To https://github.com/benedIbiskit/Planly.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/benedIbiskit/Planly.git'
+```
+
+Force-push: после возврата к `origin/main` последний серверный коммит переписан локально через `--amend` (пробный SHA `1cc0a60`). GitHub отдельно отклонил переписывание истории:
+
+```text
+git reset --hard origin/main
+git commit --amend --no-edit --allow-empty
+git push --force origin main
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/benedIbiskit/Planly/rules?ref=refs%2Fheads%2Fmain
+remote:
+remote: - Cannot force-push to this branch
+remote:
+remote: - Changes must be made through a pull request.
+remote:
+To https://github.com/benedIbiskit/Planly.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/benedIbiskit/Planly.git'
+```
+
+После эксперимента владелец выполнил `git fetch origin` и `git reset --hard origin/main`. Скриншот подтверждает чистое дерево и совпадение `main`, `origin/main`, `origin/HEAD` на `dd39f8a`. Пробные коммиты на сервер не попали. Эти команды описывают уже проведённый эксперимент; для обычной разработки переписывание общей истории не используется.
+
+Первая попытка `push --force` с новым пустым коммитом проверяла только требование PR; доказательством запрета force-push служит повторный эксперимент с `--amend` и строкой `Cannot force-push to this branch` выше.
+
+Любое временное отключение защиты фиксируется здесь: **кто, когда и зачем**. Если пробный пустой коммит всё же попал в `main`, фиксируются его SHA и дата; история сервера для его удаления не переписывается.
 
 > TODO (модуль 3, практика №5): после появления CI-пайплайна включить в ruleset `protect-main`
 > правило «Require status checks to pass» и добавить в обязательные проверки джобы
